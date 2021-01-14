@@ -2,7 +2,7 @@
 A discord bot
 
 ### Before using
-If you want use my code make sure you cretae .env with the following template:
+If you want use my code make sure you create .env with the following template:
 
 ```env
 # .env
