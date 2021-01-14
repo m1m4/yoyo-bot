@@ -1,7 +1,11 @@
-/.env
+
+# Directories
 /venv/
-/venv/pyvenv.cfg
 /build/
 /dist/
 /.idea/
+/.env
+
+# Files
 /bot.spec
+/icon.ico
