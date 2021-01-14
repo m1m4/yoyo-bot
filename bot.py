@@ -5,6 +5,7 @@ import discord
 import random
 import json
 import traceback
+import time
 
 from dotenv import load_dotenv
 from discord.ext import commands
@@ -24,10 +25,19 @@ intents = discord.Intents.default()
 intents.members = True
 bot = commands.Bot(command_prefix='.', intents=intents)
 
+retard_mode = False
+
 
 @bot.event
 async def on_ready():
     print(f'{bot.user.name} connected to discord')
+
+
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.BadArgument):
+        await ctx.send('אחי זה אפילו לא כתוב טוב')
+        await ctx.send(error)
 
 
 @bot.event
@@ -129,10 +139,13 @@ async def repeat(ctx, *msg):
 
 @bot.command(name='yoyo', aliases=['y'], help='Gives you an awesome joke.')
 async def send_joke(ctx, cat: str = None):
-
     try:
         jokes_dict = json.loads(open(PATH + r'\jokes\dict.json', 'r').read())
         jokes_list = list(jokes_dict)
+
+        if cat not in jokes_list and cat:
+            await ctx.send('קטגוריה מגניבה אבל אין לי בדיחות כאלה :cry:')
+            return
 
         if not cat:
             cat = random.choice(jokes_list)
@@ -152,11 +165,35 @@ async def send_joke(ctx, cat: str = None):
     await ctx.send(joke)
 
 
-@bot.event
-async def on_command_error(ctx, error):
-    if isinstance(error, commands.BadArgument):
-        await ctx.send('אחי זה אפילו לא כתוב טוב')
-        await ctx.send(error)
+@bot.command(name='retardmode', aliases=['retard', 'rm', 'rmode'], help="Unleash the Yoyo's full power.")
+async def repeat(ctx, mode):
 
+    global retard_mode
+
+    # TODO: Add more aliases later
+    on_aliases = ['on', 'start', 'unleash', 'fullpower']
+    off_aliases = ['off', 'stop', 'destroy']
+
+    if mode in on_aliases:
+
+        await ctx.send('בטוח?')
+        await time.sleep(2)
+        await ctx.send('סתם לא אין חרטות')
+        await ctx.send('Unleashing full power...')
+        await time.sleep(2)
+        await ctx.send('הופההההההההההה!!!! :kissing_smiling_eyes: :rage: :wink: :smiley: :nerd: '
+                       ':face_with_symbols_over_mouth: :relaxed::kissing_closed_eyes: :face_with_monocle: '
+                       ':heart_eyes: :sunglasses: :sob: :flushed: :kissing_closed_eyes: :face_with_monocle: '
+                       ':heart_eyes: :sunglasses: :face_with_symbols_over_mouth: :scream: :astonished: :hugging: '
+                       ':grimacing: :money_mouth: :dizzy_face: :cold_face: :hot_face: :exploding_head: :nerd: '
+                       ':face_with_symbols_over_mouth: :kissing_closed_eyes: :face_with_monocle: :heart_eyes: '
+                       ':sunglasses::scream: :astonished: :hugging: :grimacing: :money_mouth: :dizzy_face:')
+        retard_mode = True
+
+    if mode in off_aliases:
+        await ctx.send('חחח ניסיון יפה')
+        await time.sleep(10)
+        await ctx.send('טוב נו...')
+        retard_mode = False
 
 bot.run(TOKEN)
