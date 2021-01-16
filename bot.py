@@ -137,7 +137,7 @@ async def repeat(ctx, *msg):
         await ctx.send("מעוך רצח")
 
 
-@bot.command(name='yoyo', aliases=['y'], help='Gives you an awesome joke.')
+@bot.command(name='joke', aliases=['y', 'yoyo', 'yoyojokes'], help='Gives you an awesome joke.')
 async def send_joke(ctx, cat: str = None):
     try:
         jokes_dict = json.loads(open(PATH + r'\jokes\dict.json', 'r').read())
