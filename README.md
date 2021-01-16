@@ -21,6 +21,7 @@ All command are using the prefix -  .{something}
  - joke {category} - sends a random joke from http://www.jokes.yo-yoo.co.il/mobile.php
 
 [] - Required to the command to work
+
 {} - Optional
 
 ## TODO
