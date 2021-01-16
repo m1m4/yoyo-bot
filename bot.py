@@ -36,16 +36,7 @@ async def on_ready():
 @bot.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.BadArgument):
-        await ctx.send('אחי זה אפילו לא כתוב טוב')
-        await ctx.send(error)
-
-
-@bot.event
-async def on_member_join(member):
-    await member.create_dm()
-    await member.dm_channel.send(
-        f'{member.name} Initiating moist infrastructure... !'
-    )
+        await ctx.send('כתוב מעפן תנסה שוב')
 
 
 @bot.command(name='roll_dice', aliases=['r', 'roll'], help='Simulates rolling dice.')
@@ -112,21 +103,35 @@ def create_dice_message(dice):
 
 
 @bot.command(name='prefix', aliases=['p'], help='Repeats your message.')
-async def repeat(ctx, *msg):
+async def set_prefix(ctx, *msg):
     if msg:
         await ctx.send(' '.join(msg))
     else:
         await ctx.send("מעוך רצח")
 
 
-@bot.command(name='create-channel')
-@commands.has_role('fr')
-async def create_channel(ctx, channel_name='giant-t-rex'):
-    guild = ctx.guild
-    existing_channel = discord.utils.get(guild.channels, name=channel_name)
-    if not existing_channel:
-        print(f'Creating a new channel: {channel_name}')
-        await guild.create_text_channel(channel_name)
+@bot.command(name='aliases', aliases=['a'], help='Sends all the aliases of the given command.')
+async def aliases(ctx, message: str):
+    try:
+        command = commands.Bot.get_command(bot, message)
+
+        if not command:
+            raise commands.BadArgument
+
+        command_aliases = command.aliases
+        command_name = command.name
+
+        final = f'`.{command_name}` has {str(len(command_aliases))} aliases: '
+        for alias in command_aliases:
+            final += f'`.{alias}` '
+
+        await ctx.send(final)
+
+    except commands.BadArgument:
+        raise commands.BadArgument
+
+    except:
+        traceback.print_exc()
 
 
 @bot.command(name='repeat', help='Repeats your message.')
@@ -166,8 +171,8 @@ async def send_joke(ctx, cat: str = None):
 
 
 @bot.command(name='retardmode', aliases=['retard', 'rm', 'rmode'], help="Unleash the Yoyo's full power.")
-async def repeat(ctx, mode):
-
+async def retard_command(ctx, mode):
+    # TODO: Finish command
     global retard_mode
 
     # TODO: Add more aliases later
@@ -175,7 +180,6 @@ async def repeat(ctx, mode):
     off_aliases = ['off', 'stop', 'destroy']
 
     if mode in on_aliases:
-
         await ctx.send('בטוח?')
         await time.sleep(2)
         await ctx.send('סתם לא אין חרטות')
@@ -195,5 +199,6 @@ async def repeat(ctx, mode):
         await time.sleep(10)
         await ctx.send('טוב נו...')
         retard_mode = False
+
 
 bot.run(TOKEN)

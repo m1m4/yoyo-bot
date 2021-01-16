@@ -5,7 +5,7 @@ A discord bot
 **Another Disclaimer:**  Keep in mind there might be some strong language and black humor, I didn't mean to hurt anybody
 
 ## Before using
-If you want use my code then make sure you create .env with the following template:
+If you want to use my code then make sure you create .env with the following template:
 
 ```env
 # .env
@@ -18,7 +18,8 @@ All command are using the prefix -  .{something}
 
  - roll_dice [number of dice]  - Simulates rolling dice.
  - repeat [message] - Repeats your message.
- - joke {category} - sends a random joke from http://www.jokes.yo-yoo.co.il/mobile.php
+ - joke {category} - sends a random joke from http://www.jokes.yo-yoo.co.il/
+ - aliases [command] - Sends all the aliases of the given command.
 
 [] - Required to the command to work
 
@@ -27,7 +28,6 @@ All command are using the prefix -  .{something}
 ## TODO
 
 **Commands**
- - aliases [command] - send the aliases of the command
  - retard_mode [on/off] - does bad stuff
  - suggest [suggestion] - sends me a suggestion for the bot
  
