@@ -5,6 +5,7 @@
 /dist/
 /.idea/
 /.env
+/jokes/
 
 # Files
 /bot.spec
