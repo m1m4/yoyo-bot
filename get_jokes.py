@@ -33,10 +33,14 @@ def extract_jokes(cat_key, page):
 def download_category_jokes(cat):
     jokes = extract_jokes(jokes_mapping.get(cat), 1)
 
-    file = open(PATH + rf'\jokes-{cat}.txt', 'wb')
+    with open(PATH + rf'\jokes-{cat}.txt', 'rb') as file:
+        current_jokes = file.readlines()
 
-    for joke in jokes:
-        file.write((joke + '\n').encode())
+    if not jokes == current_jokes:
+        with open(PATH + rf'\jokes-{cat}.txt', 'ab') as file:
+            for joke in jokes:
+                if joke not in current_jokes:
+                    file.write((joke + '\n').encode())
 
     file.close()
 

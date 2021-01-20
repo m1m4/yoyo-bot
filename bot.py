@@ -1,32 +1,33 @@
 # bot.py
 
 import os
-import discord
 import random
+import asyncio
+import discord
 import json
-import traceback
-import time
-
+from essentials import *
+from discord.ext import commands, tasks
 from dotenv import load_dotenv
-from discord.ext import commands
 
 # Load enviroment variables
 load_dotenv()
 
-# The token
-TOKEN = os.getenv('DISCORD_TOKEN')
-# The name of my server
-GUILD = os.getenv('DISCORD_GUILD')
-# Directory path of the server application
-PATH = os.path.dirname(os.path.realpath(__file__))
+TOKEN = os.getenv('DISCORD_TOKEN')  # The token
+PATH = os.path.dirname(os.path.realpath(__file__))  # Directory path of the bot.py application
 
 # Set the intents so the bot will work
 intents = discord.Intents.default()
 intents.members = True
+
+# Create the bot and add all the cogs
 bot = commands.Bot(command_prefix='.', intents=intents)
+bot.add_cog(Essentials(bot))
 
 retard_mode = False
 
+
+# Listeners here
+# --------------------------------------------------------------------
 
 @bot.event
 async def on_ready():
@@ -38,6 +39,15 @@ async def on_command_error(ctx, error):
     if isinstance(error, commands.BadArgument):
         await ctx.send('כתוב מעפן תנסה שוב')
 
+
+# --------------------------------------------------------------------
+
+
+# Loops here
+# --------------------------------------------------------------------
+
+@tasks.loop(hours=1)
+# --------------------------------------------------------------------
 
 @bot.command(name='roll_dice', aliases=['r', 'roll'], help='Simulates rolling dice.')
 async def roll(ctx, dice_count: int = 1):
@@ -102,46 +112,6 @@ def create_dice_message(dice):
     return final
 
 
-@bot.command(name='prefix', aliases=['p'], help='Repeats your message.')
-async def set_prefix(ctx, *msg):
-    if msg:
-        await ctx.send(' '.join(msg))
-    else:
-        await ctx.send("מעוך רצח")
-
-
-@bot.command(name='aliases', aliases=['a'], help='Sends all the aliases of the given command.')
-async def aliases(ctx, message: str):
-    try:
-        command = commands.Bot.get_command(bot, message)
-
-        if not command:
-            raise commands.BadArgument
-
-        command_aliases = command.aliases
-        command_name = command.name
-
-        final = f'`.{command_name}` has {str(len(command_aliases))} aliases: '
-        for alias in command_aliases:
-            final += f'`.{alias}` '
-
-        await ctx.send(final)
-
-    except commands.BadArgument:
-        raise commands.BadArgument
-
-    except:
-        traceback.print_exc()
-
-
-@bot.command(name='repeat', help='Repeats your message.')
-async def repeat(ctx, *msg):
-    if msg:
-        await ctx.send(' '.join(msg))
-    else:
-        await ctx.send("מעוך רצח")
-
-
 @bot.command(name='joke', aliases=['y', 'yoyo', 'yoyojokes'], help='Gives you an awesome joke.')
 async def send_joke(ctx, cat: str = None):
     try:
@@ -181,10 +151,10 @@ async def retard_command(ctx, mode):
 
     if mode in on_aliases:
         await ctx.send('בטוח?')
-        await time.sleep(2)
+        await asyncio.sleep(2)
         await ctx.send('סתם לא אין חרטות')
         await ctx.send('Unleashing full power...')
-        await time.sleep(2)
+        await asyncio.sleep(2)
         await ctx.send('הופההההההההההה!!!! :kissing_smiling_eyes: :rage: :wink: :smiley: :nerd: '
                        ':face_with_symbols_over_mouth: :relaxed::kissing_closed_eyes: :face_with_monocle: '
                        ':heart_eyes: :sunglasses: :sob: :flushed: :kissing_closed_eyes: :face_with_monocle: '
@@ -196,7 +166,7 @@ async def retard_command(ctx, mode):
 
     if mode in off_aliases:
         await ctx.send('חחח ניסיון יפה')
-        await time.sleep(10)
+        await asyncio.sleep(10)
         await ctx.send('טוב נו...')
         retard_mode = False
 
