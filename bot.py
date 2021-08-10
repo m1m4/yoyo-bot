@@ -5,6 +5,7 @@ import discord
 import random
 import json
 import traceback
+import get_jokes
 
 from dotenv import load_dotenv
 from discord.ext import commands
@@ -15,7 +16,6 @@ load_dotenv()
 # The token
 TOKEN = os.getenv('DISCORD_TOKEN')
 # The name of my server
-GUILD = os.getenv('DISCORD_GUILD')
 # Directory path of the server application
 PATH = os.path.dirname(os.path.realpath(__file__))
 
@@ -28,7 +28,7 @@ bot = commands.Bot(command_prefix='.', intents=intents)
 @bot.event
 async def on_ready():
     print(f'{bot.user.name} connected to discord')
-    exec(open(f"{PATH}//get_jokes.py").read())
+    get_jokes.main()
 
 
 @bot.event
