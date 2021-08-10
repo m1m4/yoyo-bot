@@ -28,7 +28,6 @@ All command are using the prefix -  .{something}
 ## TODO
 
 **Commands**
- - retard_mode [on/off] - does bad stuff
  - suggest [suggestion] - sends me a suggestion for the bot
  
  **Features**
